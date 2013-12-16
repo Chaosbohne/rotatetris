@@ -1,0 +1,36 @@
+extends layout
+block content
+    #status.container
+      .row
+        .col-xs-2.col-sm-2.col-md-2
+          .text-right
+            h1#statustext 
+    .container
+      .row
+        .col-xs-2.col-sm-2.col-md-2
+          .text-right
+            p
+              strong
+                | QR-Code
+        .col-xs-10.col-sm-10.col-md-10
+          .text-left
+             img(src='https://chart.googleapis.com/chart?cht=qr&chl=http%3A%2F%2Frotatetris-43308.euw1.actionbox.io%2F#{title}&chs=180x180&choe=UTF-8&chld=L|2', rel='nofollow', alt='qr code')                    
+      .row
+        .col-xs-2.col-sm-2.col-md-2
+          canvas#Canvas3d(width='600', height='600') This browser or document mode doesn't support canvas
+          div#divFps Fps:   
+             
+    script(type='text/javascript', src="/socket.io/socket.io.js")
+    script(type='text/javascript', src='/javascript/playDesktop.js')    
+    script(type='text/javascript', src='/javascript/desktopFiles/javascript/gl-matrix.js')
+    script(type='text/javascript', src='/javascript/desktopFiles/javascript/webgl-utils.js')     
+    
+    script(type='text/javascript', src='/javascript/desktopFiles/javascript/controller.js') 
+    script(type='text/javascript', src='/javascript/desktopFiles/javascript/figure.js') 
+    script(type='text/javascript', src='/javascript/desktopFiles/javascript/keyboardInput.js') 
+    script(type='text/javascript', src='/javascript/desktopFiles/javascript/gameModel.js') 
+    script(type='text/javascript', src='/javascript/desktopFiles/javascript/view.js')     
+
+
+    
+    

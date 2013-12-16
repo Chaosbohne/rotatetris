@@ -1,0 +1,39 @@
+extends layout
+block content
+    #status.container
+      .row
+        .col-xs-2.col-sm-2.col-md-2
+          .text-right
+            h1#statustext 
+      #ready.row.hidden
+        .col-xs-2.col-sm-2.col-md-2
+          button#btnstart(type='button') Start!
+          
+    #start.container.hidden
+      .row
+        .col-xs-10.col-sm-10.col-md-10
+          .text-left
+            table
+              tr
+                td
+                td
+                  input#bTop(type='button', value='^')
+              tr
+                td
+                  input#bLeft(type='button', value='a')
+                td
+                td
+                  input#bRight(type='button', value='b')
+              tr
+                td
+                td
+                  input#bDown(type='button', value='c')
+        
+
+    script(type='text/javascript', src="/socket.io/socket.io.js")
+    script(type='text/javascript', src='/javascript/rotateListener.js')    
+    script(type='text/javascript', src='/javascript/playSmartphone.js')  
+
+
+    
+    
