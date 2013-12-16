@@ -10,35 +10,13 @@ html body{
   margin-top: 20%;
 }
 
-.color1 {
-  color: white;
-}
-
-.color2 {
-  color: white;
-}
-
-.color3 {
-  color: white;
-}
-
-.color4 {
-  color: white;
-}
-
-.color5 {
-  color: white;
-}
-
-.color6 {
-  color: white;
-}
 
 .joytetheading {
   font-size: 500%;
   font-style: normal;
   font-weight: normal;
   line-height: 1;
+  color: white;
 }
 
 #start a {
@@ -47,5 +25,3 @@ margin-top: 20px;
 -moz-box-shadow: 0px 0px 200px 164px rgba(255, 255, 255, 0.1); /* Firefox */
 box-shadow: 0px 0px 200px 164px rgba(255, 255, 255, 0.1); /* Standard */
 }
-
-

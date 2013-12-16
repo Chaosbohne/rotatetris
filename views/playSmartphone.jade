@@ -11,28 +11,23 @@ block content
           
     #start.container.hidden
       .row
-        .col-xs-10.col-sm-10.col-md-10
-          .text-left
-            table
-              tr
-                td
-                td
-                  input#bTop(type='button', value='^')
-              tr
-                td
-                  input#bLeft(type='button', value='a')
-                td
-                td
-                  input#bRight(type='button', value='b')
-              tr
-                td
-                td
-                  input#bDown(type='button', value='c')
+        .col-xs-6.col-sm-6.col-md-6
+          .row          
+            .col-xs-12.col-sm-12.col-md-12
+              btn.btn-primary.btn-lg.btn-block#bTop ^
+            .col-xs-12.col-sm-12.col-md-12
+              btn.btn-primary.btn-lg.btn-block#bDown c
+        .col-xs-6.col-sm-6.col-md-6
+          .row          
+            .col-xs-6.col-sm-6.col-md-6
+              btn.btn-primary.btn-lg.btn-block#bTop a
+            .col-xs-6.col-sm-6.col-md-6
+            btn.btn-primary.btn-lg.btn-block#bDown b
         
 
     script(type='text/javascript', src="/socket.io/socket.io.js")
-    script(type='text/javascript', src='/javascript/rotateListener.js')    
-    script(type='text/javascript', src='/javascript/playSmartphone.js')  
+    script(type='text/javascript', src='/javascript/smartphoneFiles/rotateListener.js')    
+    script(type='text/javascript', src='/javascript/smartphoneFiles/websocket.js')  
 
 
     

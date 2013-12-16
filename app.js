@@ -10,16 +10,6 @@ var express = require('express')
   , socket = require('socket.io');
 
 
-  
-
-/**
- * Requiring models
- */
-var models_path = './models';
-fs.readdirSync(models_path).forEach(function (file) {
-  require(models_path+'/'+file);
-});
-
 
 /**
  * Include Subfiles
@@ -76,7 +66,6 @@ io.sockets.on('connection', function(socket) {
   });
   
   socket.on('propagate', function(s) {
-    console.log('propagate');
     socket.broadcast.emit('propagate', s);
   });  
 });

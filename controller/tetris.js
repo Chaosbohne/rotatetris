@@ -30,3 +30,7 @@ exports.playDesktop = function(req, res) {
     res.render('playDesktop', {title: req.route.params.id});
   }
 };
+
+exports.test = function(req, res) {
+  res.render('test');
+};

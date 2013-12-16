@@ -12,6 +12,8 @@ module.exports = function(app) {
   app.get('/', tetris.start);
   
   app.get('/play', tetris.play);
+
+  app.get('/test', tetris.test);  
   
   app.get('/:id', tetris.playDesktop);
 };
