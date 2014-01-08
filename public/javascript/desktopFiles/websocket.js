@@ -42,24 +42,6 @@
     console.log(data);
 
     inputReceived(data.key);
-    /*
-    switch(data.key) {
-      case 'left':
-        inputReceived('moveLeft');
-        break;
-      case 'right':
-        inputReceived('moveRight');
-        break;
-      case 'up':
-        inputReceived('moveUp');
-        break;
-      case 'down':
-        inputReceived('moveDown');
-        break;
-      case 'rotate':
-        inputReceived('rotateRight');
-        break;        
-    }*/
   });
 
   //status connecting, update ui
@@ -74,10 +56,12 @@
 
   //status ready, update ui
   function setReady() {
-    $('#statustext').text('Ready...');
+    $('#wait').addClass('hidden');
+    $('#play').removeClass('hidden');
+    initializeTetris();
   }
   
 
   function setStart() {
-    initializeTetris();
+    startGame();
   }

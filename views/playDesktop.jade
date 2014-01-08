@@ -1,25 +1,40 @@
 extends layout
 block content
-    #status.container
-      .row
-        .col-xs-2.col-sm-2.col-md-2
-          .text-right
-            h1#statustext 
-    .container
-      .row
-        .col-xs-2.col-sm-2.col-md-2
-          .text-right
-            p
-              strong
-                | QR-Code
-        .col-xs-10.col-sm-10.col-md-10
-          .text-left
-             img(src='https://chart.googleapis.com/chart?cht=qr&chl=http%3A%2F%2Frotatetris-61681.euw1.actionbox.io%2F#{title}&chs=180x180&choe=UTF-8&chld=L|2', rel='nofollow', alt='qr code')                    
-      .row
-        .col-xs-2.col-sm-2.col-md-2
-          canvas#Canvas3d(width='600', height='600') This browser or document mode doesn't support canvas
-          div#divFps Fps:   
-             
+  #wait.container
+    .row
+      include headline
+    .col-xs-offset-2.col-xs-4.col-sm-offset-2.col-sm-4.col-md-offset-2.col-md-4.text-center
+      img.img-responsive(src='https://chart.googleapis.com/chart?cht=qr&chl=http%3A%2F%2Frotatetris-61681.euw1.actionbox.io%2F#{title}&chs=180x180&choe=UTF-8&chld=L|2', rel='nofollow', alt='QR code')
+    .col-xs-4.col-sm-4.col-md-4.text-center
+      h4 Scan QR-Code with your phone.
+      h4 Use Chrome for best experience.  
+
+  #play.container.hidden           
+    .row
+      h1
+        img.img-responsive(src='/images/rotetris.png', alt='Responsive image')    
+      .col-xs-12.col-sm-10.col-md-8.text-center
+        canvas#Canvas3d(width='600', height='600') This browser or document mode doesn't support canvas
+      .col-xs-12.col-sm-2.col-md-4.description-spacer
+        dl
+          dt
+            span.glyphicon.glyphicon-refresh 
+          dd Welt nach links/rechts um 90 Grad kippen         
+          dt
+            span.glyphicon.glyphicon-arrow-up 
+          dd Stein nach oben bewegen    
+          dt
+            span.glyphicon.glyphicon-arrow-down 
+          dd Stein nach unten bewegen  
+          dt
+            span.glyphicon.glyphicon-arrow-left 
+          dd Stein nach links bewegen  
+          dt
+            span.glyphicon.glyphicon-arrow-right 
+          dd Stein nach rechts bewegen
+           
+  include footer
+  
     script(type='text/javascript', src="/socket.io/socket.io.js")
     script(type='text/javascript', src='/javascript/desktopFiles/websocket.js')    
     script(type='text/javascript', src='/javascript/desktopFiles/gl-matrix.js')
@@ -29,6 +44,10 @@ block content
     script(type='text/javascript', src='/javascript/desktopFiles/figure.js') 
     script(type='text/javascript', src='/javascript/desktopFiles/keyboardInput.js') 
     script(type='text/javascript', src='/javascript/desktopFiles/gameModel.js') 
+    script(type='text/javascript', src='/javascript/desktopFiles/view_stone.js') 
+    script(type='text/javascript', src='/javascript/desktopFiles/view_playfieldborder.js') 
+    script(type='text/javascript', src='/javascript/desktopFiles/view_background.js') 
+    script(type='text/javascript', src='/javascript/desktopFiles/view_text.js') 
     script(type='text/javascript', src='/javascript/desktopFiles/view.js')     
 
 

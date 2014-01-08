@@ -1,0 +1,21 @@
+extends layout
+block content
+  #start.container
+    .row
+      include headline
+
+      .col-sm-offset-2.col-sm-4.col-md-offset-2.col-md-4.text-center
+        img(src='/images/Ultrabook.png', width='158px', height='79px', alt='Ultrabook image')
+      .col-sm-4.col-md-4.text-center
+        img(src='/images/Smartphone1.png', width='45px', height='79px', alt='Smartphone image')
+      .col-sm-offset-2.col-sm-4.col-md-offset-2.col-md-4.text-center
+        h4 You are already on a computer.
+      .col-sm-4.col-md-4.text-center
+        h4 Grab your phone to get started.
+    .row
+      .col-xs-12.col-sm-12.col-md-12.text-center
+        a.play.btn.btn-primary.btn-lg.btn-space(href='/play') Next
+        
+        
+  include footer
+            

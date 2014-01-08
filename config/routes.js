@@ -11,6 +11,11 @@ module.exports = function(app) {
   
   app.get('/', tetris.start);
   
+  app.get('/wait', tetris.wait);
+  
+  app.get('/wait/:id', tetris.waitid);
+  
+  
   app.get('/play', tetris.play);
 
   app.get('/test', tetris.test);  

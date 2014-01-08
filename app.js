@@ -66,6 +66,7 @@ io.sockets.on('connection', function(socket) {
   });
   
   socket.on('propagate', function(s) {
+    console.log(s);
     socket.broadcast.emit('propagate', s);
   });  
 });

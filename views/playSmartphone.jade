@@ -1,28 +1,27 @@
 extends layout
 block content
-    #status.container
-      .row
-        .col-xs-2.col-sm-2.col-md-2
-          .text-right
-            h1#statustext 
-      #ready.row.hidden
-        .col-xs-2.col-sm-2.col-md-2
-          button#btnstart(type='button') Start!
+  #loading.container
+    .row
+      .col-xs-12.col-sm-12.col-md-12
+        .text-center.pagination-centered
+          h1
+            img.img-responsive(src='/images/rotetris.png', alt='Responsive image')
+          h2 Loading...
           
-    #start.container.hidden
+  #start.container.hidden
+    #playSmartphone.text-center
       .row
-        .col-xs-6.col-sm-6.col-md-6
-          .row          
-            .col-xs-12.col-sm-12.col-md-12
-              btn.btn-primary.btn-lg.btn-block#bTop ^
-            .col-xs-12.col-sm-12.col-md-12
-              btn.btn-primary.btn-lg.btn-block#bDown c
-        .col-xs-6.col-sm-6.col-md-6
-          .row          
-            .col-xs-6.col-sm-6.col-md-6
-              btn.btn-primary.btn-lg.btn-block#bTop a
-            .col-xs-6.col-sm-6.col-md-6
-            btn.btn-primary.btn-lg.btn-block#bDown b
+        .col-xs-4.col-sm-4.col-md-4      
+          button#bLeft.btn-warning.btn.btn-default.btn-lg(type='button')
+            span.glyphicon.glyphicon-arrow-left     
+        .col-xs-4.col-sm-4.col-md-4
+          button#bTop.btn-warning.btn.btn-default.btn-lg(type='button')
+            span.glyphicon.glyphicon-arrow-up 
+          button#bDown.btn-warning.btn.btn-default.btn-lg(type='button')
+            span.glyphicon.glyphicon-arrow-down 
+        .col-xs-4.col-sm-4.col-md-4
+          button#bRight.btn-warning.btn.btn-default.btn-lg(type='button')
+            span.glyphicon.glyphicon-arrow-right 
         
 
     script(type='text/javascript', src="/socket.io/socket.io.js")

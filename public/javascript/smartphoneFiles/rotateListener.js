@@ -1,28 +1,10 @@
 /**
- * @file yodh.js
+ * @file jod.js
  *
  * Jod - "Hand"
  */
 ;
 
-
-(function(){
-  /*
-    * You can polyfill the CustomEvent() constructor functionality in Internet Explorer 9 and 10 with the following code:
-    * https://developer.mozilla.org/en-US/docs/Web/API/CustomEvent
-    */
-   function CustomEvent ( event, params ) {
-      params = params || { bubbles: false, cancelable: false, detail: undefined };
-      var evt = document.createEvent( 'CustomEvent' );
-      evt.initCustomEvent( event, params.bubbles, params.cancelable, params.detail );
-      return evt;
-   };
-
-   CustomEvent.prototype = window.CustomEvent.prototype;
-
-   window.CustomEvent = CustomEvent;
-   /* end of polyfill */
-})();
 
 
 
@@ -33,8 +15,9 @@ var Jod = function () {};
  */
 Jod.prototype._isPortraitInitialView = null;
 Jod.prototype._isPortraitCurrentView = null;
+Jod.prototype._triggerOnAxis = null;
 Jod.prototype._triggerAtDegree = null;
-Jod.prototype._triggerTolerance = 0.2;
+Jod.prototype._triggerTolerance = 0.3;
 Jod.prototype._currentSector = null;
 
 /**
@@ -47,12 +30,14 @@ Jod.prototype.handle = function (params) {
    }
 
    if (typeof params.rotation !== "undefined") {
+      this._triggerOnAxis = params.rotation.axis ? params.rotation.axis : "beta";
       this._triggerAtDegree = params.rotation.degree ? params.rotation.degree : 90;
       this._triggerTolerance = params.rotation.tolerance ? params.rotation.tolerance : this._triggerTolerance;
    
       window.addEventListener("JodTriggerEvent", function (e) {
          //callback ist Array
-         if (Object.prototype.toString.call(params.rotation.callback) === "[object Array]") {
+         //if (Object.prototype.toString.call(params.rotation.callback) === "[object Array]") {
+         if (params.rotation.callback instanceof Array) {
             //Anzahl ist gleich 1
             if (params.rotation.callback.length === 1) {
    
@@ -72,6 +57,17 @@ Jod.prototype.handle = function (params) {
    if (typeof params.click !== "undefined") {
       for (var id in params.click) {
          document.getElementById(id).addEventListener("click", params.click[id], false);
+      }
+   }
+
+   if (typeof params.mousedown !== "undefined") {
+      /*
+      for (var id in params.mousedown) {
+         document.getElementById(id).addEventListener("mousedown", params.click[id], false);
+      }
+      */
+      for (var id in params.mousedown) {
+        document.getElementById(id).addEventListener("mousedown", params.mousedown[id], false);
       }
    }
 
@@ -108,8 +104,10 @@ Jod.prototype.handle = function (params) {
     * DeviceOrientation
     */
    if (window.DeviceOrientationEvent) {
-   window.addEventListener("deviceorientation", function (doe) {
       console.log("DeviceOrientationEvent wird unterstuetzt");
+
+      window.addEventListener("deviceorientation", function (doe) {
+      
 
       var e = {
             "absolute": Math.floor(doe.absolute), //doe.absolute Indicates whether or not the device is providing orientation data absolutely (that is, in reference to the Earth's coordinate frame) or using some arbitrary frame determined by the device
@@ -121,22 +119,48 @@ Jod.prototype.handle = function (params) {
             "triggerQuotient": null,
             "triggerQuotientRoundedUp": null,
             "diff": null
-         };
+          }
+         ,beta = {
+            "direction": null
+          };
 
-      if (i._triggerAtDegree !== null) {
-         alpha.triggerQuotient = e.alpha / i._triggerAtDegree;
-         alpha.triggerQuotientRoundedUp = Math.ceil(alpha.triggerQuotient),
-         alpha.quotRoundDiff = alpha.triggerQuotientRoundedUp - alpha.triggerQuotient
+      if (i._triggerOnAxis === "alpha") {
+         if (i._triggerAtDegree !== null) {
+            alpha.triggerQuotient = e.alpha / i._triggerAtDegree;
+            alpha.triggerQuotientRoundedUp = Math.ceil(alpha.triggerQuotient),
+            alpha.quotRoundDiff = alpha.triggerQuotientRoundedUp - alpha.triggerQuotient
+  
+            if(alpha.quotRoundDiff < i._triggerTolerance && Jod._currentSector !== alpha.triggerQuotientRoundedUp) {
+               Jod._currentSector = alpha.triggerQuotientRoundedUp;
 
-         if(alpha.quotRoundDiff < i._triggerTolerance && Jod._currentSector !== alpha.triggerQuotientRoundedUp) {
-            Jod._currentSector = alpha.triggerQuotientRoundedUp;
+               window.dispatchEvent(new CustomEvent ("JodTriggerEvent", {
+                  "detail": {
+                     "sector": alpha.triggerQuotientRoundedUp,
+                     "view": (i._isPortraitCurrentView ? "portrait" : "landscape")
+                  }
+               }));
+            }
+         }
+      }
+      else if (i._triggerOnAxis === "beta") {
+         if (e.beta <= -45) {
+            beta.direction = "rotateLeft";
+         }
+         else if (e.beta >= 45) {
+            beta.direction = "rotateRight";
+         }
 
-            window.dispatchEvent(new CustomEvent ("JodTriggerEvent", {
-               "detail": {
-                  "sector": alpha.triggerQuotientRoundedUp,
-                  "view": (i._isPortraitCurrentView ? "portrait" : "landscape")
-               }
-            }));
+         if (Jod._currentSector !== beta.direction) {
+            Jod._currentSector = beta.direction;
+
+            if (beta.direction !== null) {
+               window.dispatchEvent(new CustomEvent ("JodTriggerEvent", {
+                  "detail": {
+                     "sector": beta.direction,
+                     "view": (i._isPortraitCurrentView ? "portrait" : "landscape")
+                  }
+               }));
+            }
          }
       }
    }, false);
@@ -152,8 +176,9 @@ Jod.prototype.handle = function (params) {
     * DeviceMotion
     */
    if (window.DeviceMotionEvent) {
+      console.log("DeviceMotionEvent wird unterstuetzt");
+
       window.addEventListener('devicemotion', function(e) {
-         console.log("DeviceMotionEvent wird unterstuetzt");
       }, false);
    }
    else {

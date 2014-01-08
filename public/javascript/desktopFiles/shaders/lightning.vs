@@ -26,7 +26,7 @@ void main(void)
     
     //BEGIN BELEUCHTUNG 
     vec4 transformedNormal = uNMatrix * vec4(aVertexNormal, 1.0); 
-    float fDirectionalLightWeighting = max(dot(transformedNormal.xyz, -uLightingDirection), 0.0); 
+    float fDirectionalLightWeighting = max(dot(normalize(transformedNormal.xyz), -uLightingDirection), 0.0); 
     vLightWeighting = uAmbientColor + uDirectionalColor * fDirectionalLightWeighting; 
     //ENDE BELEUCHTUNG 
 }

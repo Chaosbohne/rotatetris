@@ -2,6 +2,7 @@
   var socket = io.connect('http://rotatetris-61681.euw1.actionbox.io');
   var url = window.location.pathname;
   var id = url.substring(url.lastIndexOf('/') + 1);
+  var started = false;
 
   //Websocket connected
   //send initRoom message
@@ -22,7 +23,8 @@
 
   //Websocket ready message received
   socket.on('ready', function() {
-    setReady();
+    //setReady();
+    setTimeout(setReady(),3000);
   });
 
   //Websocket start message received
@@ -32,94 +34,96 @@
 
   //Websocket disconnected
   socket.on('disconnect', function(reason) {
-    $('#status').text('Disconnected');
     console.log('websocket: Disconnected ' + reason);
   });
 
 
   //status connecting, update ui
   function setConnecting() {
-    $('#statustext').text('Connecting');
+
   }
   
   //status init of websocket, update ui
   function setInitialising() {
-    $('#statustext').text('Initializing');    
+    
   }
 
   //status ready, update ui
   function setReady() {
-    $('#statustext').text('Ready...');
     $('#ready').removeClass('hidden');
-    $('#btnstart').click(function() {
-      socket.emit('start', { roomId:  id});
+    $('#start').removeClass('hidden');
+    $('#loading h2').html('Press a button to start');
+    $('#loading h1').addClass('hidden');
+    $('#bTop').mousedown(function() {
+      socket.emit('start', { roomId:  id});      
+      $('#bTop').unbind('mousedown');
+      $('#bDown').unbind('mousedown');
+      $('#bLeft').unbind('mousedown');
+      $('#bRight').unbind('mousedown');
     });
+    $('#bDown').mousedown(function() {
+      socket.emit('start', { roomId:  id});      
+      $('#bTop').unbind('mousedown');
+      $('#bDown').unbind('mousedown');
+      $('#bLeft').unbind('mousedown');
+      $('#bRight').unbind('mousedown');
+    });
+    $('#bLeft').mousedown(function() {
+      socket.emit('start', { roomId:  id});      
+      $('#bTop').unbind('mousedown');
+      $('#bDown').unbind('mousedown');
+      $('#bLeft').unbind('mousedown');
+      $('#bRight').unbind('mousedown');
+    });
+    $('#bRight').mousedown(function() {
+      socket.emit('start', { roomId:  id});      
+      $('#bTop').unbind('mousedown');
+      $('#bDown').unbind('mousedown');
+      $('#bLeft').unbind('mousedown');
+      $('#bRight').unbind('mousedown');
+    });    
   }
   
   function setStart() {
-    $('#start').removeClass('hidden');
-    $('#status').addClass('hidden');
+    $('#loading').addClass('hidden');   
+    var height = 0;
+    if(document.documentElement.clientWidth > document.documentElement.clientHeight) 
+      height = document.documentElement.clientHeight;    
+    else 
+      height = document.documentElement.clientWidth;    
+    
+    height = height - 200;
+    if(height > 0)
+      $('#start').css({'margin-top': height/2 + 'px'});
+    
     /* listener fuer die rotation */
     i.handle({
        "rotation": {
           //"target": window,
-          //"axis": "alpha",
-          "degree": 90,
+          "axis": "beta",
+          "degree": 180,
           //"tolerance": 0.3,
           "callback": function (e) {
              //DEBUG 
-             //console.log(e.detail);
+             console.log(e.detail.sector);
              //Pe.socket.emit("cmd", {"what": e.detail});
              //document.getElementById("output").innerHTML = e.detail.sector;
-             socket.emit('propagate', {key: 'rotateRight'});
+             socket.emit('propagate', {key: e.detail.sector});
           }
        },
-       "click": {
+       "mousedown": {
           "bTop": function (e) {
-             socket.emit('propagate', {key: 'moveUp'});
+            socket.emit('propagate', {key: 'moveUp'});
           },
           "bLeft": function (e) {
-             socket.emit('propagate', {key: 'moveLeft'});
+            socket.emit('propagate', {key: 'moveLeft'});
           },
           "bRight": function (e) {
-             socket.emit('propagate', {key: 'moveRight'});
+            socket.emit('propagate', {key: 'moveRight'});
           },
           "bDown": function (e) {
-             socket.emit('propagate', {key: 'moveDown'});
+            socket.emit('propagate', {key: 'moveDown'});
           }
        }
     });    
   }
-
-
-
-
-
-
-
-/*
-  $('#left').click(function() {
-    //socket.emit('left');
-    socket.emit('propagate', {key: 'left'});
-  });
-  
-  $('#right').click(function() {
-    //socket.emit('right');
-    socket.emit('propagate', {key: 'right'});
-  });
-  
-  $('#up').click(function() {
-    //socket.emit('up');
-    socket.emit('propagate', {key: 'up'});
-  });
-  
-  $('#down').click(function() {
-    //socket.emit('down');
-    socket.emit('propagate', {key: 'down'});
-  });
-  
-  $('#rotate').click(function() {
-    //socket.emit('rotate');
-    socket.emit('propagate', {key: 'rotate'});
-  });
-  */

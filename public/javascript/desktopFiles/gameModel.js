@@ -12,7 +12,10 @@ var GameModel = function ()
     
     
     //init
-    this.gameStatus = 1;  //1-bevor Start  2-Spiel läuft
+    this.gameStatus = 1;  //1-bevor Start  2-Spiel läuft    3-Spielende 
+  
+    this.score = 0;
+    this.scoreTarget = 0;
   
     this.rows = 20;
     this.cols = 11;
@@ -21,7 +24,7 @@ var GameModel = function ()
     this.playareaRotation = 0;
      
     var steptime = 0;
-    var stepduration = 1600;
+    var stepduration = 600;
     
     var blinkduration = 1000;
     var blinktime = blinkduration;
@@ -55,12 +58,27 @@ var GameModel = function ()
     //Process
     this.process = function(timediff, speedFactor)
     {
-      
+      //vor Start
       if(this.gameStatus == 1) return;
+      
+      //Spielende
+       if(this.gameStatus == 3)
+       {  steptime += timediff;
+      
+          //neues Spiel
+          if(steptime > 5000) 
+          {
+              this.reset();
+              this.gameStatus = 2;
+          }
+          return;
+       }
+     
       
       //Blinken
       if(blinktime < blinkduration)
       {
+          this.score = this.score + (this.scoreTarget - this.score) * 0.1*speedFactor;
           blinktime += timediff;
           
           //Blinken beendet
@@ -112,8 +130,9 @@ var GameModel = function ()
           return;
       }
       
-      
       //normaler Spielverlauf
+      this.score = this.score + (this.scoreTarget - this.score) * 0.02*speedFactor;
+      if(this.score - this.scoreTarget < 0.01) this.score = this.scoreTarget;
       steptime += timediff;
       
       //Figur versetzen
@@ -123,11 +142,12 @@ var GameModel = function ()
           figure.setOnPlayarea(this.playarea, 0);
   
   
-          //Figur liegt auf
+           //Figur liegt auf
           if(figure.touchesGround(this.playarea))
-          {   figure.setOnPlayarea(this.playarea, 1);
+          {             
+              figure.setOnPlayarea(this.playarea, 1);
        
-              var zeilenEntfernt = false;
+              var zeilenEntfernt = 0;
        
               //Zeilen entfernen
               for(var i=0; i<this.rows; i++)
@@ -142,18 +162,26 @@ var GameModel = function ()
                   //Zeile voll
                   if(sum == this.cols)
                   {
-                      var zeilenEntfernt = true;
+                      zeilenEntfernt++;
                       for(var j=0; j<this.cols; j++) this.playarea[i][j] = 50;
                   }
               }
               
-              if(zeilenEntfernt == true)
+              if(zeilenEntfernt > 0)
               { 
-                  blinktime = 0;
-                  return;
+                  switch(zeilenEntfernt)
+                  {
+                      case 1: this.scoreTarget += 10; break;
+                      case 2: this.scoreTarget += 25; break;
+                      case 3: this.scoreTarget += 50; break;
+                      case 4: this.scoreTarget += 100; break;
+                 }
+                 blinktime = 0;
+                 return;
               }
               else
               {
+                 this.scoreTarget += 1;
                  var figureValid = this.createNewFigure();
                  if(!figureValid) this.gameLost();
               }
@@ -176,17 +204,28 @@ var GameModel = function ()
         figure = new Figure(figureType, this.rows, this.cols);
         return figure.canBePlaced(this.playarea);
     }
-
-    
+   
     this.startGame = function()
     {
       this.gameStatus = 2;
     }
+      
+    //Spiel verloren
+    this.gameLost = function()
+    {
+        this.gameStatus = 3;
+        steptime = 0;      
+    }    
   
     //Startzustand herstellen
     this.reset = function()
     {   this.playareaRotation = 0;
+        this.score = 0;
+        this.scoreTarget = 0;
         steptime = 0;
+    
+        blinktime = blinkduration;    
+        slidetime = this.slideduration;
          
         for(var i=0; i<this.rows; i++)
         {
@@ -208,15 +247,8 @@ var GameModel = function ()
         var figureType = Math.floor(Math.random()*FIGURE_NUMBEROFTYPES);
         figure = new Figure(figureType, this.rows, this.cols);
         figure.setOnPlayarea(this.playarea, 100);
-          
     }
 
-    //Spiel verloren
-    this.gameLost = function()
-    {
-        this.reset();
-    }
-    
 
     this.logicMoveLeft = function()
     {
