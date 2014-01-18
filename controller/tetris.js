@@ -3,11 +3,12 @@
  */
 exports.start = function(req, res){
   var helpers = require('../config/helpers');
+  console.log('Route start');
   if(helpers.isSmartphone(req.headers['user-agent']) === true) {
     res.render('startSmartphone');
   }else {
     res.render('startDesktop');
-  }  
+  } 
 };
 
 exports.wait = function(req, res){

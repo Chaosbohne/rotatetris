@@ -1,9 +1,30 @@
 extends layout
 block content
-    .container
-      .row
-        .col-xs-2.col-sm-2.col-md-2
-          canvas#Canvas3d(width='600', height='600') This browser or document mode doesn't support canvas             
+  #play.container           
+    .row
+      h1
+        img.img-responsive.centerimage(src='/images/rotatris.png', alt='Responsive image')    
+      .col-xs-12.col-sm-10.col-md-8.text-center
+        canvas#Canvas3d(width='600', height='600') This browser or document mode doesn't support canvas
+      .col-xs-12.col-sm-2.col-md-4.description-spacer
+        dl
+          dt
+            span.glyphicon.glyphicon-refresh 
+          dd Welt nach links/rechts um 90 Grad kippen         
+          dt
+            span.glyphicon.glyphicon-arrow-up 
+          dd Stein nach oben bewegen    
+          dt
+            span.glyphicon.glyphicon-arrow-down 
+          dd Stein nach unten bewegen  
+          dt
+            span.glyphicon.glyphicon-arrow-left 
+          dd Stein nach links bewegen  
+          dt
+            span.glyphicon.glyphicon-arrow-right 
+          dd Stein nach rechts bewegen
+           
+  include footer          
   
     script(type='text/javascript', src='/javascript/desktopFiles/test.js')
     script(type='text/javascript', src='/javascript/desktopFiles/gl-matrix.js')

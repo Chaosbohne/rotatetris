@@ -39,7 +39,7 @@ var GameModel = function ()
 
     }
     
-    for(var i=0; i<10; i++)
+    for(var i=0; i<3; i++)
     {
          this.playarea[i][0] = 1;
          this.playarea[i][this.cols-1] = 1;

@@ -1,5 +1,5 @@
 
-  var socket = io.connect('http://rotatetris-61681.euw1.actionbox.io');
+  var socket = io.connect('http://rotatetris-61681.euw1.nitrousbox.com');
   var url = window.location.pathname;
   var id = url.substring(url.lastIndexOf('/') + 1);
   var started = false;
